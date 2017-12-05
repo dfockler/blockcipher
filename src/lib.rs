@@ -1,18 +1,29 @@
+extern crate block_cipher_trait;
+extern crate generic_array;
 
-pub struct Cipher;
+use block_cipher_trait::BlockCipher;
+use generic_array::{GenericArray};
+use generic_array::typenum::{U1, U16, U256};
 
-impl Cipher {
-    fn decode(ciphertext: &[u8]) -> Vec<u8> {
-        unimplemented!();
+pub struct FeistelCipher;
+
+impl BlockCipher for FeistelCipher {
+    type KeySize = U256;
+    type BlockSize = U16;
+    type ParBlocks = U1;
+
+    fn new(key: &GenericArray<u8, Self::KeySize>) -> Self {
+        FeistelCipher {}
     }
 
-    pub fn encode(plaintext: &[u8]) {
-        // split_into_blocks()
-        // or iterate over blocks of correct size
-        for block in plaintext.chunks(16) {
-            println!("{:?}", block);
-        }
+    fn encrypt_block(&self, block: &mut GenericArray<u8, Self::BlockSize>) {
+
     }
+
+   /// Decrypt block in-place
+   fn decrypt_block(&self, block: &mut GenericArray<u8, Self::BlockSize>) {
+
+   }
 }
 
 #[cfg(test)]
@@ -21,7 +32,7 @@ mod tests {
 
     #[test]
     fn encode_test() {
-        let text = "hello, world! What are you up to today"; 
-        Cipher::encode(text.as_bytes());
+        let text = "hello, world! What are you up to today";
+        Feistel::encrypt_block(text.as_bytes());
     }
 }
